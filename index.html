@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Age Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #f8f9fa;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      padding: 30px;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 1.8rem;
+      letter-spacing: 0.02em;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1e3c72;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #e2e6ea;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Age Calculator</h1>
+    <label for="dob">Date of birth</label>
+    <input id="dob" type="date" />
+    <button id="calculate">Calculate Age</button>
+    <div class="result" id="result">Enter your date of birth and press Calculate.</div>
+  </main>
+
+  <script>
+    const dobInput = document.getElementById('dob');
+    const resultDiv = document.getElementById('result');
+    const calculateButton = document.getElementById('calculate');
+
+    function calculateAge(birthDate) {
+      const today = new Date();
+      let years = today.getFullYear() - birthDate.getFullYear();
+      let months = today.getMonth() - birthDate.getMonth();
+      let days = today.getDate() - birthDate.getDate();
+
+      if (days < 0) {
+        months -= 1;
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      return { years, months, days };
+    }
+
+    calculateButton.addEventListener('click', () => {
+      const dobValue = dobInput.value;
+      if (!dobValue) {
+        resultDiv.textContent = 'Please select your date of birth.';
+        return;
+      }
+
+      const birthDate = new Date(dobValue);
+      if (isNaN(birthDate)) {
+        resultDiv.textContent = 'Invalid date. Try again.';
+        return;
+      }
+
+      const age = calculateAge(birthDate);
+      resultDiv.textContent = `You are ${age.years} year(s), ${age.months} month(s), and ${age.days} day(s) old.`;
+    });
+  </script>
+</body>
+</html>
